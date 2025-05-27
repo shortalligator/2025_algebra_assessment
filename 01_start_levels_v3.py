@@ -9,10 +9,13 @@ class Levels:
         self.level_frame = Frame(padx=10, pady=10, bg="#cce5ff")
         self.level_frame.grid()
 
+        intro_string = "introduction will go here"
+
         # list for the heading labels (text | font)
         headings_labels_list = [
             ["Linear Algebra Quiz", ("Arial", "18", "bold")],
-            ["Select a Level", ("Arial", "16", "bold")]
+            [intro_string, ("Arial", "10", "bold")],
+            ["How many questions?", ("Arial", "16", "bold")]
         ]
 
         # create the labels
@@ -24,11 +27,16 @@ class Levels:
 
             levels_labels_ref.append(make_label)
 
+        self.levels_label = Label(self.level_frame, text="Select a level",
+                                  font=("Arial", 16, "bold"),
+                                  bg="#cce5ff")
+        self.levels_label.grid(row=4)
+
         # list for buttons (frame | text | bg | command | width | row)
         levels_button_list = [
-            [self.level_frame, "EASY", "#FFFB92", "", 20, 3],
-            [self.level_frame,"MEDIUM", "#95ff9c", "", 20, 4],
-            [self.level_frame, "HARD", "#ff7171", "", 20, 5]
+            [self.level_frame, "EASY", "#FFFB92", "", 20, 5],
+            [self.level_frame,"MEDIUM", "#95ff9c", "", 20, 6],
+            [self.level_frame, "HARD", "#ff7171", "", 20, 7]
         ]
 
         # create buttons and add to list
@@ -37,10 +45,28 @@ class Levels:
             make_level_button = Button(item[0], text=item[1], bg=item[2], command=item[3],
                                          font=("Arial", 16, "bold"),
                                          width=item[4], fg="#000000")
-            make_level_button.grid(row=item[5], padx=5, pady=5)
+            make_level_button.grid(row=item[5], padx= 5, pady=5)
 
             control_ref_list.append(make_level_button)
 
+        self.num_rounds_entry = Entry(self.level_frame,
+                                      font=("Arial", 20, "bold",),
+                                      width=10)
+        self.num_rounds_entry.grid(row=3, column=0, padx=10, pady=10)
+
+
+
+# class QuestionAmount:
+#     """
+#     asks the user how many questions the user wants to answer
+#     """
+#
+#     def __init__(self):
+#         self.num_of_questions_box = Toplevel()
+#
+#         self.num_of_questions_frame = Frame(self.num_of_questions_box)
+#         self.num_of_questions_frame.grid(padx=10, pady=10)
+#
 
 # main routine
 if __name__ == "__main__":
