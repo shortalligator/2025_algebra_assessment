@@ -55,19 +55,6 @@ class Levels:
         self.num_rounds_entry.grid(row=3, column=0, padx=10, pady=10)
 
 
-
-# class QuestionAmount:
-#     """
-#     asks the user how many questions the user wants to answer
-#     """
-#
-#     def __init__(self):
-#         self.num_of_questions_box = Toplevel()
-#
-#         self.num_of_questions_frame = Frame(self.num_of_questions_box)
-#         self.num_of_questions_frame.grid(padx=10, pady=10)
-#
-
 # main routine
 if __name__ == "__main__":
     root = Tk()
