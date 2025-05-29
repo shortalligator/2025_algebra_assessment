@@ -1,11 +1,11 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" version="27.0.6">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" version="27.0.9">
   <diagram name="Page-1" id="Kadla1Wodx2_WjePzzAx">
     <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="V2c5M10AFD95ZUrolOOv-8" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
-          <mxGeometry x="390" y="260" width="360" height="470" as="geometry" />
+          <mxGeometry x="390" y="260" width="360" height="400" as="geometry" />
         </mxCell>
         <mxCell id="i38Q_EET_aaeyMdn4X0I-3" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cce5ff;strokeColor=#36393d;" vertex="1" parent="1">
           <mxGeometry x="421" y="40" width="300" height="200" as="geometry" />
@@ -73,35 +73,23 @@
         <mxCell id="V2c5M10AFD95ZUrolOOv-7" value="&amp;nbsp;Linear Algebra Quiz" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="390" y="262" width="130" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="V2c5M10AFD95ZUrolOOv-10" value="&lt;b&gt;&lt;font&gt;QUESTION #&amp;nbsp; of #&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;" vertex="1" parent="1">
-          <mxGeometry x="490" y="310" width="160" height="30" as="geometry" />
+        <mxCell id="V2c5M10AFD95ZUrolOOv-10" value="&lt;b&gt;&lt;font&gt;QUESTION #&amp;nbsp; of #&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="485" y="310" width="170" height="30" as="geometry" />
         </mxCell>
         <mxCell id="V2c5M10AFD95ZUrolOOv-11" value="QUESTION GOES HERE" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="460" y="360" width="220" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="V2c5M10AFD95ZUrolOOv-12" value="&lt;b&gt;OPTION 1&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fad7ac;strokeColor=#b46504;" vertex="1" parent="1">
-          <mxGeometry x="420" y="427.5" width="120" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="V2c5M10AFD95ZUrolOOv-13" value="&lt;b&gt;OPTION 2&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fad9d5;strokeColor=#ae4132;" vertex="1" parent="1">
-          <mxGeometry x="600" y="427.5" width="120" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="V2c5M10AFD95ZUrolOOv-14" value="&lt;b&gt;OPTION 3&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
-          <mxGeometry x="420" y="490" width="120" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="V2c5M10AFD95ZUrolOOv-16" value="&lt;b&gt;OPTION 4&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f9f7ed;strokeColor=#36393d;" vertex="1" parent="1">
-          <mxGeometry x="600" y="490" width="120" height="40" as="geometry" />
-        </mxCell>
         <mxCell id="V2c5M10AFD95ZUrolOOv-17" value="STATS" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fontSize=18;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" vertex="1" parent="1">
-          <mxGeometry x="420" y="597" width="120" height="40" as="geometry" />
+          <mxGeometry x="420" y="544" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="V2c5M10AFD95ZUrolOOv-19" value="HELP" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fontSize=18;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="600" y="597" width="120" height="40" as="geometry" />
+          <mxGeometry x="600" y="544" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="V2c5M10AFD95ZUrolOOv-20" value="PLAY AGAIN / END GAME" style="rounded=0;whiteSpace=wrap;html=1;fontSize=18;fontStyle=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" vertex="1" parent="1">
-          <mxGeometry x="420" y="662" width="300" height="40" as="geometry" />
+          <mxGeometry x="420" y="600.18" width="300" height="40" as="geometry" />
         </mxCell>
         <mxCell id="V2c5M10AFD95ZUrolOOv-21" value="NEXT QUESTION" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fontSize=18;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="1">
-          <mxGeometry x="420" y="545" width="300" height="40" as="geometry" />
+          <mxGeometry x="420" y="492" width="300" height="40" as="geometry" />
         </mxCell>
         <mxCell id="V2c5M10AFD95ZUrolOOv-23" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fad7ac;strokeColor=#b46504;" vertex="1" parent="1">
           <mxGeometry x="30" y="380" width="300" height="170" as="geometry" />
@@ -183,6 +171,12 @@
         </mxCell>
         <mxCell id="JtFzMPvqlAdvDmIb0rAZ-21" value="there will be some introduction text here" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="JtFzMPvqlAdvDmIb0rAZ-1">
           <mxGeometry x="50" y="80" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GXjdBrl1gfYz0ByrSoSD-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="547.0000000000001" y="420" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="GXjdBrl1gfYz0ByrSoSD-2" value="&lt;b&gt;x&amp;nbsp; =&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=30;" vertex="1" parent="1">
+          <mxGeometry x="467" y="425" width="60" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

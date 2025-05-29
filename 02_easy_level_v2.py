@@ -122,23 +122,6 @@ class EasyLevel:
         self.options_frame = Frame(self.easy_frame, bg="#fff2cc")
         self.options_frame.grid(row=2, padx=10)
 
-        # list for button details
-        options_buttons_list = [
-            ["option 1", "#fad7ac", 0],
-            ["option 2", "#fad9d5", 1],
-            ["option 3", "#cdeb8b", 2],
-            ["option 4", "#f9f7ed", 3]
-        ]
-
-        # create 4 buttons in a 2 x 2 grid
-        for item in options_buttons_list:
-            self.random_option = Button(self.options_frame, font=("Arial", 12),
-                                        text=item[0], width=15,
-                                        command="", bg=item[1]
-                                        # partial(self.round_results, item)
-                                        )
-            self.random_option.grid(row=item[2] // 2,
-                                    column=item[2] % 2, padx=5, pady=5)
 
 
 # main routine
