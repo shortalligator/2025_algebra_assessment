@@ -42,7 +42,7 @@ class Levels:
         self.num_rounds_entry = Entry(self.level_frame,
                                       font=("Arial", 20, "bold"),
                                       width=10, bg="#ffffff")
-        self.num_rounds_entry.grid(row=3, column=0, padx=10, pady=10)
+        self.num_rounds_entry.grid(row=3, padx=10, pady=10)
 
         # list for buttons (frame | text | bg | command | width | row)
         levels_button_list = [
@@ -119,8 +119,45 @@ class EasyLevel:
                                         font=("Arial", 12), bg="#fff2cc")
         self.question_label.grid(row=1, pady=30)
 
-        self.options_frame = Frame(self.easy_frame, bg="#fff2cc")
-        self.options_frame.grid(row=2, padx=10)
+        self.answer_frame = Frame(self.easy_frame, bg="#fff2cc")
+        self.answer_frame.grid(row=2, padx=10)
+
+        self.answer_entry = Entry(self.answer_frame, font=("Arial", 20, "bold"),
+                                  width=10, bg="#ffffff")
+        self.answer_entry.grid(row=3, column=1, padx=10, pady=10)
+
+        self.x_label = Label(self.answer_frame, text="X  =",
+                             font=("Arial", 25, "bold"), bg="#fff2cc")
+        self.x_label.grid(column=0, row=3)
+
+        self.buttons_frame = Frame(self.easy_frame, bg="#fff2cc")
+        self.buttons_frame.grid(row=3)
+
+        self.hints_stats_frame = Frame(self.buttons_frame)
+        self.hints_stats_frame.grid(row=2)
+
+        # list for buttons ( text | bg | command | width | row | column )
+        buttons_list = [
+            [self.buttons_frame, "NEXT QUESTION", "#1ba1e2", "", 22, 1, None],
+            [self.hints_stats_frame, "Hints", "#FF8000", "", 10, 2, 0],
+            [self.hints_stats_frame, "Stats", "#333333", "", 10, 2, 1],
+            [self.buttons_frame, "END GAME", "#008a00", "", 22, 3, None]
+        ]
+
+        # create buttons and add to list
+        control_ref_list = []
+        for item in buttons_list:
+            make_control_button = Button(item[0], text=item[1], bg=item[2], command=item[3],
+                                         font=("Arial", 16, "bold"),
+                                         width=item[4], fg="#FFFFFF")
+            make_control_button.grid(row=item[5], column=item[6], padx=5, pady=5)
+
+            control_ref_list.append(make_control_button)
+
+        self.next_question_button = control_ref_list[0]
+        self.stats_button = control_ref_list[1]
+        self.end_game_button = control_ref_list[3]
+
 
 
 
