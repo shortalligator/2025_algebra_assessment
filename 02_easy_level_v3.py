@@ -141,6 +141,7 @@ class EasyLevel:
 
     def __init__(self, how_many):
         self.easy_box = Toplevel(padx=10, pady=10, bg="#fff2cc")
+        self.easy_box.title("Easy Linear Algebra")
 
         self.questions_answered = IntVar()
         self.questions_answered.set(0)
@@ -166,18 +167,18 @@ class EasyLevel:
         self.answer_frame = Frame(self.easy_frame, bg="#fff2cc")
         self.answer_frame.grid(row=2, padx=10)
 
+        self.feedback_label = Label(self.answer_frame, text="",
+                                    font=("Arial", 14, "bold"), bg="#fff2cc")
+        self.feedback_label.grid(row=2, column=0, columnspan=2, pady=(0, 10))
+
         self.answer_entry = Entry(self.answer_frame, font=("Arial", 20, "bold"),
                                   width=10, bg="#ffffff")
         self.answer_entry.grid(row=3, column=1, padx=10, pady=10)
 
         self.submit_button = Button(self.answer_frame, text="Submit",
                                     font=("Arial", 12, "bold"), bg="#4CAF50",
-                                    fg="white", command=self.check_answer)
+                                    fg="#ffffff", command=self.check_answer)
         self.submit_button.grid(row=4, column=1, pady=5)
-
-        self.feedback_label = Label(self.answer_frame, text="",
-                                    font=("Arial", 14, "bold"), bg="#fff2cc")
-        self.feedback_label.grid(row=2, column=0, columnspan=2, pady=(0, 10))
 
         self.generate_question()
 
@@ -194,9 +195,9 @@ class EasyLevel:
         # list for buttons ( text | bg | command | width | row | column )
         buttons_list = [
             [self.buttons_frame, "NEXT QUESTION", "#1ba1e2", self.generate_question, 22, 1, None],
-            [self.hints_stats_frame, "Hints", "#FF8000", "", 10, 2, 0],
-            [self.hints_stats_frame, "Stats", "#333333", "", 10, 2, 1],
-            [self.buttons_frame, "END GAME", "#008a00", "", 22, 3, None]
+            [self.hints_stats_frame, "Hints", "#FF8000", self.to_hints, 10, 2, 0],
+            [self.hints_stats_frame, "Stats", "#333333", self.to_stats, 10, 2, 1],
+            [self.buttons_frame, "END GAME", "#008a00", self.close_easy, 22, 3, None]
         ]
 
         # create buttons and add to list
@@ -210,7 +211,8 @@ class EasyLevel:
             control_ref_list.append(make_control_button)
 
         self.next_question_button = control_ref_list[0]
-        self.stats_button = control_ref_list[1]
+        self.hints_button = control_ref_list[1]
+        self.stats_button = control_ref_list[2]
         self.end_game_button = control_ref_list[3]
 
     def generate_question(self):
@@ -239,13 +241,107 @@ class EasyLevel:
                 feedback = f"Incorrect! The correct answer was {self.correct_answer}"
 
             self.questions_answered.set(self.questions_answered.get() + 1)
-            self.feedback_label.config(text=feedback, fg="#008000" if "Correct" in feedback else "#ff0000")
+            self.feedback_label.config(text=feedback, fg="#008000" if "Correct" in feedback else "#990000")
             self.submit_button.config(state=DISABLED)
 
         except ValueError:
             self.feedback_label.config(text="Please enter a valid number", fg="#990000")
 
+    def close_easy(self):
+        root.deiconify()
+        self.easy_box.destroy()
 
+    def to_hints(self):
+        DisplayHints(self)
+
+    def to_stats(self):
+        DisplayStats(self)
+
+
+class DisplayHints:
+
+    def __init__(self, partner):
+
+        self.hints_box = Toplevel()
+        self.hints_box.title("Hints")
+        background = "#fad7ac"
+
+        # disable hints button
+        partner.hints_button.config(state=DISABLED)
+
+        # If users press the cross at the top, closes and 'releases' the hints button
+        self.hints_box.protocol('WM_DELETE_WINDOW', partial(self.close_hints, partner))
+
+        self.hints_frame = Frame(self.hints_box, width=200, height=150,
+                                 bg= background)
+        self.hints_frame.grid()
+
+        self.hints_heading_label = Label(self.hints_frame, text="Hints",
+                                         font=("Arial", 16, "bold"), bg=background)
+        self.hints_heading_label.grid(row=0)
+
+        hints_text = "hints will go here"
+
+        self.hints_text_label = Label(self.hints_frame, text=hints_text,
+                                      wraplength=250, justify="left",
+                                      font=("Arial", 12), bg=background)
+        self.hints_text_label.grid(row=1, padx=10, pady=10)
+
+        self.dismiss_button = Button(self.hints_frame, font=("Arial", 12, "bold"),
+                                     text="DISMISS", bg="#CC6600", fg="#ffffff",
+                                     command=partial(self.close_hints, partner))
+        self.dismiss_button.grid(row=2, pady=10, padx=10)
+
+    def close_hints(self, partner):
+        """
+        Closes hints dialogue box and enables hints button
+        """
+        # Put hints button back to normal
+        partner.hints_button.config(state=NORMAL)
+        self.hints_box.destroy()
+
+
+class DisplayStats:
+    def __init__(self, partner):
+        self.stats_box = Toplevel()
+        self.stats_box.title("Game Stats")
+        background = "#f9f7ed"
+
+        partner.stats_button.config(state=DISABLED)
+
+        self.stats_box.protocol("WM_DELETE_WINDOW", partial(self.close_stats, partner))
+
+        self.stats_frame = Frame(self.stats_box, bg=background, padx=20, pady=20)
+        self.stats_frame.grid()
+
+        # Heading
+        self.heading = Label(self.stats_frame, text="Game Statistics",
+                             font=("Arial", 18, "bold"), bg=background)
+        self.heading.grid(row=0, pady=(0, 10))
+
+        # Calculate stats
+        answered = partner.questions_answered.get()
+        correct = partner.correct_questions.get()
+        percent_correct = round((correct / answered) * 100, 1) if answered else 0
+
+        stats_text = (f"Questions Answered: {answered}\n"
+                      f"Correct Answers: {correct}\n"
+                      f"Percentage Correct: {percent_correct}%")
+
+        self.stats_label = Label(self.stats_frame, text=stats_text,
+                                 font=("Arial", 14), bg=background, justify="left")
+        self.stats_label.grid(row=1)
+
+        # Dismiss button
+        self.dismiss_button = Button(self.stats_frame, text="Close",
+                                     font=("Arial", 12, "bold"),
+                                     bg="#007acc", fg="white",
+                                     command=partial(self.close_stats, partner))
+        self.dismiss_button.grid(row=2, pady=10)
+
+    def close_stats(self, partner):
+        partner.stats_button.config(state=NORMAL)
+        self.stats_box.destroy()
 
 # main routine
 if __name__ == "__main__":
