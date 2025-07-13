@@ -5,27 +5,26 @@ list_of_operators = ["+", "-", "*", "/"]
 
 operator = random.choice(list_of_operators)
 
-while True:
 
-    # x+a = b
-    if operator == "+":
-        x = b - a
-        equation = f"x + {a} = {b}"
+# x+a = b
+if operator == "+":
+    x = b - a
+    equation = f"x + {a} = {b}"
 
-    # x-a = b
-    elif operator == "-":
-        x = b + a
-        equation = f"x - {a} = {b}"
+# x-a = b
+elif operator == "-":
+    x = b + a
+    equation = f"x - {a} = {b}"
 
-    # xa = b
-    elif operator == "*":
-        x = b / a
-        equation = f"x * {a} = {b}"
+# xa = b
+elif operator == "*":
+    x = b / a
+    equation = f"x * {a} = {b}"
 
-    # x/a = b
-    else:
-        x = b * a
-        equation = f"x / {a} = {b}"
+# x/a = b
+else:
+    x = b * a
+    equation = f"x / {a} = {b}"
 
-    print(equation)
+print(equation)
 
