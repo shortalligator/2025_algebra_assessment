@@ -120,7 +120,7 @@ class Levels:
             "Welcome to the Linear Algebra Quiz\n\n"
             "Test your knowledge of basic algebra by solving\nequations to find the value of x. "
             "Choose how many\nquestions you'd like to answer, then select a difficulty\nlevel. "
-            "If the answer has decimals, round it to 2\ndecimal places"
+            "\n\nYOU DON'T NEED A CALCULATOR"
         )
 
         # list for the heading labels (text | font)
@@ -155,8 +155,8 @@ class Levels:
         # list for buttons (frame | text | bg | command | width | row)
         levels_button_list = [
             [self.level_frame, "EASY", "#FFFB92", self.check_rounds_to_easy_level, 5],
-            [self.level_frame, "MEDIUM", "#95ff9c", "", 6],
-            [self.level_frame, "HARD", "#ff7171", "", 7]
+            [self.level_frame, "MEDIUM", "#95ff9c", self.check_rounds_to_medium_level, 6],
+            [self.level_frame, "HARD", "#ff7171", self.check_rounds_to_hard_level, 7]
         ]
 
         # create buttons and add to list

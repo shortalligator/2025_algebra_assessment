@@ -3,36 +3,37 @@ import random
 from functools import partial  # to prevent unwanted windows
 
 
-def medium_questions():
+def hard_questions():
 
     operator1 = random.choice(["*", "/"])
     operator2 = random.choice(["+", "-"])
 
-    if operator1 == "*":
-        a = random.choice([i for i in range(-10, 11) if i != 0])
-        b = random.choice([i for i in range(-10, 11) if i != 0])
-        c = random.choice([i for i in range(-10, 11) if i != 0])
-    else:
-        a = random.randint(-10, 10)
-        b = random.randint(-10, 10)
-        c = random.randint(-10, 10)
 
-    # ax + b = c
+    a = random.choice([1, 10])
+    b = random.choice([i for i in range(-10, 11) if i != 0])
+    c = random.choice([i for i in range(-10, 11) if i != 0])
+    d =  random.choice([i for i in range(-10, 11) if i != 0])
+
+
+    # a(bx + c) = d
     if operator1 == "*" and operator2 == "+":
-        x = (c - b) / a
-        equation = f"{a}x + {b} = {c}"
-    # ax - b = c
+        x = (d - c) / b / a
+        equation = f"{a}({b}x + {c}) = {d}"
+
+    # a(bx - c) = d
     elif operator1 == "*" and operator2 == "-":
-        x = (c + b) / a
-        equation = f"{a}x - {b} = {c}"
-    # x / a + b = c
+        x = (d + a * c) / (a * b)
+        equation = f"{a}({b}x - {c}) = {d}"
+
+    # (bx + c) / a = d
     elif operator1 == "/" and operator2 == "+":
-        x = (c - b) * a
-        equation = f"x/{a} + {b} = {c}"
-    # x / a - b = c
-    elif operator1 == "/" and operator2 == "-":
-        x = (c + b) * a
-        equation = f"x/{a} - {b} = {c}"
+        x = ((d * a) - c) / b
+        equation = f"({b}x + {c}) / {a} = {d}"
+
+    # (bx - c) / a = d
+    else:
+        x = ((d * a) + c) / b
+        equation = f"({b}x - {c}) / {a} = {d}"
 
     return equation, x
 
@@ -86,8 +87,8 @@ class Levels:
         # list for buttons (frame | text | bg | command | width | row)
         levels_button_list = [
             [self.level_frame, "EASY", "#FFFB92", "", 5],
-            [self.level_frame, "MEDIUM", "#95ff9c", self.check_rounds_to_medium_level, 6],
-            [self.level_frame, "HARD", "#ff7171", "", 7]
+            [self.level_frame, "MEDIUM", "#95ff9c", "", 6],
+            [self.level_frame, "HARD", "#ff7171", self.check_rounds_to_hard_level(), 7]
         ]
 
         # create buttons and add to list
@@ -100,8 +101,7 @@ class Levels:
 
             control_ref_list.append(make_level_button)
 
-
-    def check_rounds_to_medium_level(self):
+    def check_rounds_to_hard_level(self):
         rounds_wanted = self.num_rounds_entry.get()
 
         self.choose_label.config(fg="#000000", font=("Arial", "16", "bold"))
@@ -115,7 +115,7 @@ class Levels:
             if rounds_wanted > 0:
                 self.num_rounds_entry.delete(0, END)
                 self.choose_label.config(text="How many questions?")
-                MediumLevel(rounds_wanted)
+                HardLevel(rounds_wanted)
                 root.withdraw()
             else:
                 has_errors = "yes"
@@ -129,15 +129,15 @@ class Levels:
             self.num_rounds_entry.delete(0, END)
 
 
-class MediumLevel:
+class HardLevel:
     """
-    Two-step linear algebra, solving for x
-    e.g. 3x + 2 = 11, x/2 - 4 = 3
+    Multi-step linear algebra, solving for x
+    e.g. 2(3x + 4) = 16 or (5x - 3)/2 = 7
     """
 
     def __init__(self, how_many):
-        self.medium_box = Toplevel(padx=10, pady=10, bg="#d9fdd3")
-        self.medium_box.title("Medium Linear Algebra")
+        self.hard_box = Toplevel(padx=10, pady=10, bg="#ffd9ec")
+        self.hard_box.title("Hard Linear Algebra")
 
         self.questions_answered = IntVar()
         self.questions_answered.set(0)
@@ -147,24 +147,24 @@ class MediumLevel:
 
         self.correct_questions = IntVar()
 
-        self.medium_frame = Frame(self.medium_box, bg="#d9fdd3")
-        self.medium_frame.grid()
+        self.hard_frame = Frame(self.hard_box, bg="#ffd9ec")
+        self.hard_frame.grid()
 
-        self.game_heading_label = Label(self.medium_frame, text="Question # of #",
-                                        font=("Arial", 20, "bold"), bg="#d9fdd3")
+        self.game_heading_label = Label(self.hard_frame, text="Question # of #",
+                                        font=("Arial", 20, "bold"), bg="#ffd9ec")
         self.game_heading_label.grid(row=0)
 
-        self.question_label = Label(self.medium_frame, text="",
-                                    font=("Arial", 20), bg="#d9fdd3")
+        self.question_label = Label(self.hard_frame, text="",
+                                    font=("Arial", 20), bg="#ffd9ec")
         self.question_label.grid(row=1, pady=10)
 
         self.correct_answer = None
 
-        self.answer_frame = Frame(self.medium_frame, bg="#d9fdd3")
+        self.answer_frame = Frame(self.hard_frame, bg="#ffd9ec")
         self.answer_frame.grid(row=2, padx=10)
 
         self.feedback_label = Label(self.answer_frame, text="",
-                                    font=("Arial", 14, "bold"), bg="#d9fdd3")
+                                    font=("Arial", 14, "bold"), bg="#ffd9ec")
         self.feedback_label.grid(row=2, column=0, columnspan=2, pady=(0, 10))
 
         self.answer_entry = Entry(self.answer_frame, font=("Arial", 20, "bold"),
@@ -176,23 +176,21 @@ class MediumLevel:
                                     fg="#ffffff", command=self.check_answer)
         self.submit_button.grid(row=4, column=1, pady=5)
 
-        self.generate_question()
-
         self.x_label = Label(self.answer_frame, text="X  =",
-                             font=("Arial", 23, "bold"), bg="#d9fdd3")
+                             font=("Arial", 23, "bold"), bg="#ffd9ec")
         self.x_label.grid(column=0, row=3)
 
-        self.buttons_frame = Frame(self.medium_frame, bg="#d9fdd3")
+        self.buttons_frame = Frame(self.hard_frame, bg="#ffd9ec")
         self.buttons_frame.grid(row=3)
 
-        self.hints_stats_frame = Frame(self.buttons_frame, bg="#d9fdd3")
+        self.hints_stats_frame = Frame(self.buttons_frame, bg="#ffd9ec")
         self.hints_stats_frame.grid(row=2)
 
         buttons_list = [
             [self.buttons_frame, "NEXT QUESTION", "#1ba1e2", self.generate_question, 22, 1, None],
             [self.hints_stats_frame, "Hints", "#FF8000", self.to_hints, 10, 2, 0],
             [self.hints_stats_frame, "Stats", "#333333", self.to_stats, 10, 2, 1],
-            [self.buttons_frame, "END GAME", "#e31010", self.close_medium, 22, 3, None]
+            [self.buttons_frame, "END GAME", "#e31010", self.close_hard, 22, 3, None]
         ]
 
         control_ref_list = []
@@ -208,8 +206,10 @@ class MediumLevel:
         self.stats_button = control_ref_list[2]
         self.end_game_button = control_ref_list[3]
 
+        self.generate_question()
+
     def generate_question(self):
-        question, answer = medium_questions()
+        question, answer = hard_questions()
         self.correct_answer = round(answer, 2)
         self.question_label.config(text=question)
         self.answer_entry.delete(0, END)
@@ -238,9 +238,9 @@ class MediumLevel:
         except ValueError:
             self.feedback_label.config(text="Please enter a valid number", fg="#990000")
 
-    def close_medium(self):
+    def close_hard(self):
         root.deiconify()
-        self.medium_box.destroy()
+        self.hard_box.destroy()
 
     def to_hints(self):
         DisplayHints(self)
