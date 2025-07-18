@@ -1,7 +1,7 @@
 import random
 
 
-def medium_questions():
+def hard_questions():
 
     operator1 = random.choice(["*", "/"])
     operator2 = random.choice(["+", "-"])
@@ -10,29 +10,34 @@ def medium_questions():
         a = random.choice([i for i in range(-10, 11) if i != 0])
         b = random.choice([i for i in range(-10, 11) if i != 0])
         c = random.choice([i for i in range(-10, 11) if i != 0])
+        d =  random.choice([i for i in range(-10, 11) if i != 0])
     else:
         a = random.randint(-10, 10)
         b = random.randint(-10, 10)
         c = random.randint(-10, 10)
+        d = random.randint(-10, 10)
 
-    # ax + b = c
+    # a(bx + c) = d
     if operator1 == "*" and operator2 == "+":
-        x = (c - b) / a
-        equation = f"{a}x + {b} = {c}"
-    # ax - b = c
+        x = (d - c) / b / a
+        equation = f"{a}({b}x + {c}) = {d}"
+
+    # a(bx - c) = d
     elif operator1 == "*" and operator2 == "-":
-        x = (c + b) / a
-        equation = f"{a}x - {b} = {c}"
-    # x / a + b = c
+        x = (d + a * c) / (a * b)
+        equation = f"{a}({b}x - {c}) = {d}"
+
+    # (bx + c) / a = d
     elif operator1 == "/" and operator2 == "+":
-        x = (c - b) * a
-        equation = f"x/{a} + {b} = {c}"
-    # x / a - b = c
-    else:
-        x = (c + b) * a
-        equation = f"x/{a} - {b} = {c}"
+        x = ((d * a) - c) / b
+        equation = f"({b}x + {c}) / {a} = {d}"
+
+    # (bx - c) / a = d
+    elif operator1 == "/" and operator2 == "-":
+        x = ((d * a) + c) / b
+        equation = f"({b}x - {c}) / {a} = {d}"
 
     return equation, x
 
 
-print(medium_questions())
+print(hard_questions())
