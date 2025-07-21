@@ -316,7 +316,7 @@ class EasyLevel:
         self.hints_stats_frame = Frame(self.buttons_frame, bg="#fff2cc")
         self.hints_stats_frame.grid(row=2)
 
-        # list for buttons ( text | bg | command | width | row | column )
+        # list for buttons (text | bg | command | width | row | column)
         buttons_list = [
             [self.buttons_frame, "NEXT QUESTION", "#1ba1e2", self.generate_question, 22, 1, None],
             [self.hints_stats_frame, "Hints", "#FF8000", self.to_hints, 10, 2, 0],
