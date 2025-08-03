@@ -36,7 +36,6 @@ def easy_questions():
 
 
 def medium_questions():
-
     operator1 = random.choice(["*", "/"])
     operator2 = random.choice(["+", "-"])
 
@@ -87,15 +86,15 @@ def hard_questions():
     return equation, x
 
 
-class Levels:
+class Start:
     """
     Gets the user to select a level for the algebra quiz
     """
 
     def __init__(self):
         # set up the frame
-        self.level_frame = Frame(padx=10, pady=10, bg="#cce5ff")
-        self.level_frame.grid()
+        self.Start_frame = Frame(padx=10, pady=10, bg="#cce5ff")
+        self.Start_frame.grid()
 
         intro_string = (
             "Welcome to the Linear Algebra Quiz\n\n"
@@ -112,32 +111,32 @@ class Levels:
         ]
 
         # create the labels
-        levels_labels_ref = []
+        Start_labels_ref = []
         for count, item in enumerate(headings_labels_list):
-            make_label = Label(self.level_frame, text=item[0], font=item[1],
+            make_label = Label(self.Start_frame, text=item[0], font=item[1],
                                fg="#000000", bg="#cce5ff", justify="left", padx=10, pady=10)
             make_label.grid(row=count)
 
-            levels_labels_ref.append(make_label)
+            Start_labels_ref.append(make_label)
 
         # extract choice label so that it can be changed into an error message
-        self.choose_label = levels_labels_ref[2]
+        self.choose_label = Start_labels_ref[2]
 
-        self.levels_label = Label(self.level_frame, text="Select a level",
-                                  font=("Arial", 16, "bold"),
-                                  bg="#cce5ff")
-        self.levels_label.grid(row=4)
+        self.start_label = Label(self.Start_frame, text="Select a level",
+                                 font=("Arial", 16, "bold"),
+                                 bg="#cce5ff")
+        self.start_label.grid(row=4)
 
-        self.num_rounds_entry = Entry(self.level_frame,
+        self.num_rounds_entry = Entry(self.Start_frame,
                                       font=("Arial", 20, "bold"),
                                       width=10, bg="#ffffff")
         self.num_rounds_entry.grid(row=3, padx=10, pady=10)
 
         # list for buttons (frame | text | bg | command | width | row)
         levels_button_list = [
-            [self.level_frame, "EASY", "#FFFB92", self.to_easy, 5],
-            [self.level_frame, "MEDIUM", "#95ff9c", self.to_medium, 6],
-            [self.level_frame, "HARD", "#ff7171", self.to_hard, 7]
+            [self.Start_frame, "EASY", "#FFFB92", self.to_easy, 5],
+            [self.Start_frame, "MEDIUM", "#95ff9c", self.to_medium, 6],
+            [self.Start_frame, "HARD", "#ff7171", self.to_hard, 7]
         ]
 
         # create buttons and add to list
@@ -150,7 +149,7 @@ class Levels:
 
             control_ref_list.append(make_level_button)
 
-    def check_rounds_to_algebra_level(self, difficulty, question_func):
+    def check_rounds_to_start(self, difficulty, question_func):
         rounds_wanted = self.num_rounds_entry.get()
 
         self.choose_label.config(fg="#000000", font=("Arial", "16", "bold"))
@@ -164,7 +163,7 @@ class Levels:
             if rounds_wanted > 0:
                 self.num_rounds_entry.delete(0, END)
                 self.choose_label.config(text="How many questions?")
-                Start(rounds_wanted, difficulty, question_func)
+                Play(rounds_wanted, difficulty, question_func)
                 root.withdraw()
             else:
                 has_errors = "yes"
@@ -177,16 +176,16 @@ class Levels:
             self.num_rounds_entry.delete(0, END)
 
     def to_easy(self):
-        self.check_rounds_to_algebra_level("easy", easy_questions)
+        self.check_rounds_to_start("easy", easy_questions)
 
     def to_medium(self):
-        self.check_rounds_to_algebra_level("medium", medium_questions)
+        self.check_rounds_to_start("medium", medium_questions)
 
     def to_hard(self):
-        self.check_rounds_to_algebra_level("hard", hard_questions)
+        self.check_rounds_to_start("hard", hard_questions)
 
 
-class Start:
+class Play:
     """
     General algebra quiz class for all difficulty levels.
     Accepts a difficulty string and corresponding question generator function.
@@ -279,25 +278,35 @@ class Start:
         self.generate_question()  # Start with the first question
 
     def generate_question(self):
-        # Use the provided question function to get a new question and answer
-        question, answer = self.generate_question_func()
-        self.correct_answer = round(answer, 2)
-        self.question_label.config(text=question)
-        self.answer_entry.delete(0, END)
-        self.feedback_label.config(text="")
+        # End the quiz if user has answered all the requested questions
+        if self.questions_answered.get() >= self.num_of_questions_wanted.get():
+            self.next_question_button.config(state=DISABLED)
+            DisplayStats(self)
+            return
+
+        # Reset UI for next question
         self.submit_button.config(state=NORMAL)
         self.next_question_button.config(state=DISABLED)
+        self.answer_entry.config(state=NORMAL)
+        self.feedback_label.config(text="")
+        self.answer_entry.delete(0, END)
 
-        # Update heading with current progress
-        current = self.questions_answered.get() + 1
-        total = self.num_of_questions_wanted.get()
-        self.game_heading_label.config(text=f"Question {current} of {total}")
+        # Update question number display
+        current_round = self.questions_answered.get() + 1
+        total_rounds = self.num_of_questions_wanted.get()
+        self.game_heading_label.config(text=f"Question {current_round} of {total_rounds}")
+
+        # Get a new question
+        self.question, self.correct_answer = self.generate_question_func()
+
+        # Display the new question
+        self.question_label.config(text=self.question)
 
     def check_answer(self):
         # Validate and check user's answer
         user_input = self.answer_entry.get()
         try:
-            user_answer = float(user_input)
+            user_answer = int(user_input)
             if round(user_answer, 2) == round(self.correct_answer, 2):
                 feedback = "Correct!"
                 self.correct_questions.set(self.correct_questions.get() + 1)
@@ -347,7 +356,10 @@ class DisplayHints:
                                          font=("Arial", 16, "bold"), bg=background)
         self.hints_heading_label.grid(row=0)
 
-        hints_text = "hints will go here"
+        hints_text = ("To solve equations, first undo any adding or subtracting around x. "
+                      "Then, if x is multiplied or divided by a number, do the opposite to isolate x. "
+                      "For equations with brackets, first get rid of any numbers outside the brackets, "
+                      "then solve the inside step by step.")
 
         self.hints_text_label = Label(self.hints_frame, text=hints_text,
                                       wraplength=250, justify="left",
@@ -370,11 +382,13 @@ class DisplayHints:
 
 class DisplayStats:
     def __init__(self, partner):
+        self.partner = partner
         self.stats_box = Toplevel()
         self.stats_box.title("Game Stats")
         background = "#f9f7ed"
 
-        partner.stats_button.config(state=DISABLED)
+        if partner.stats_button.winfo_exists():
+            partner.stats_button.config(state=DISABLED)
 
         self.stats_box.protocol("WM_DELETE_WINDOW", partial(self.close_stats, partner))
 
@@ -407,7 +421,8 @@ class DisplayStats:
         self.dismiss_button.grid(row=2, pady=10)
 
     def close_stats(self, partner):
-        partner.stats_button.config(state=NORMAL)
+        if self.partner.stats_button.winfo_exists():
+            self.partner.stats_button.config(state=NORMAL)
         self.stats_box.destroy()
 
 
@@ -415,5 +430,5 @@ class DisplayStats:
 if __name__ == "__main__":
     root = Tk()
     root.title("Linear Algebra Quiz")
-    Levels()
+    Start()
     root.mainloop()
