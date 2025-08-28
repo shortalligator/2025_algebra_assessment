@@ -29,7 +29,7 @@ def hard_questions():
         equation = f"({b}x + {c}) / {a} = {d}"
 
     # (bx - c) / a = d
-    elif operator1 == "/" and operator2 == "-":
+    else:
         x = ((d * a) + c) / b
         equation = f"({b}x - {c}) / {a} = {d}"
 

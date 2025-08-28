@@ -2,8 +2,7 @@ import random
 
 
 def hard_questions():
-    operator1 = "*"
-    operator2 = random.choice(["+", "-"])
+    operator = random.choice(["+", "-"])
 
     a = random.randint(-10, 10)
     b = random.randint(-20, 20)
@@ -11,7 +10,7 @@ def hard_questions():
     x = random.randint(-20, 20)
 
     # a(bx + c) = d
-    if operator1 == "*" and operator2 == "+":
+    if operator == "+":
         d = a * (b * x + c)
         equation = f"{a}({b}x + {c}) = {d}"
 
@@ -22,5 +21,5 @@ def hard_questions():
 
     return equation, x
 
-
-print(hard_questions())
+while True:
+    print(hard_questions())

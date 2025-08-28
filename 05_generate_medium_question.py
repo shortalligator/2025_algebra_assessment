@@ -34,5 +34,5 @@ def medium_questions():
 
     return equation, x
 
-
-print(medium_questions())
+while True:
+    print(medium_questions())

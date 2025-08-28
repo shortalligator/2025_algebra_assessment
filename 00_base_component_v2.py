@@ -4,14 +4,22 @@ from functools import partial  # to prevent unwanted windows
 
 
 def easy_questions():
+    """
+    Generates easy-level algebra questions with basic operations.
+    Returns a tuple containing the equation string and the correct answer.
+    """
+    # List of possible mathematical operators
     list_of_operators = ["+", "-", "*", "/"]
 
+    # Randomly select an operator
     operator = random.choice(list_of_operators)
 
+    # Generate random numbers for the equation
     a = random.randint(-10, 10)
     b = random.randint(-10, 10)
-    x = random.randint(-10, 10)
+    x = random.randint(-10, 10)  # This will be the solution
 
+    # Generate equation based on the selected operator
     # x+a = b
     if operator == "+":
         b = x + a
@@ -24,6 +32,8 @@ def easy_questions():
 
     # xa = b
     elif operator == "*":
+        a = random.choice([i for i in range(-10, 11) if i != 0])
+        x = random.choice([i for i in range(-10, 11) if i != 0])
         b = x * a
         equation = f"x * {a} = {b}"
 
@@ -32,18 +42,25 @@ def easy_questions():
         x = a * b
         equation = f"x / {a} = {b}"
 
-    return equation, x
+    return equation, x  # Return the equation and its solution
 
 
 def medium_questions():
+    """
+        Generates medium-level algebra questions with two operations.
+        Returns a tuple containing the equation string and the correct answer.
+        """
+    # Randomly select two operators (one for multiplication/division, one for addition/subtraction)
     operator1 = random.choice(["*", "/"])
     operator2 = random.choice(["+", "-"])
 
+    # Generate random numbers for the equation
     a = random.randint(-10, 10)
     b = random.randint(-10, 10)
     c = random.randint(-10, 10)
-    x = random.randint(-10, 10)
+    x = random.randint(-10, 10)  # This will be the solution
 
+    # Generate equation based on the selected operators
     # ax + b = c
     if operator1 == "*" and operator2 == "+":
         c = a * x + b
@@ -61,20 +78,25 @@ def medium_questions():
         x = (c + b) * a
         equation = f"x/{a} - {b} = {c}"
 
-    return equation, x
+    return equation, x  # Return the equation and its solution
 
 
 def hard_questions():
-    operator1 = "*"
-    operator2 = random.choice(["+", "-"])
+    """
+        Generates hard-level algebra questions with distributive property.
+        Returns a tuple containing the equation string and the correct answer.
+        """
+    # Randomly select an operator for the expression inside parentheses
+    operator = random.choice(["+", "-"])
 
+    # Generate random numbers for the equation (larger range for more complexity)
     a = random.randint(-10, 10)
     b = random.randint(-20, 20)
     c = random.randint(-20, 20)
-    x = random.randint(-20, 20)
+    x = random.randint(-20, 20)  # This will be the solution
 
     # a(bx + c) = d
-    if operator1 == "*" and operator2 == "+":
+    if operator == "+":
         d = a * (b * x + c)
         equation = f"{a}({b}x + {c}) = {d}"
 
@@ -83,25 +105,26 @@ def hard_questions():
         d = a * (b * x - c)
         equation = f"{a}({b}x - {c}) = {d}"
 
-    return equation, x
+    return equation, x  # Return the equation and its solution
 
 
 class Start:
     """
-    Gets the user to select a level for the algebra quiz
+    Start screen class that allows users to select difficulty level
+    and number of questions for the algebra quiz.
     """
 
     def __init__(self):
-        # set up the frame
+        # set up the frame with padding and background color
         self.Start_frame = Frame(padx=10, pady=10, bg="#cce5ff")
         self.Start_frame.grid()
 
+        # Introduction text for the quiz
         intro_string = (
             "Welcome to the Linear Algebra Quiz\n\n"
             "Test your knowledge of basic algebra by solving\nequations to find the value of x. "
             "Choose how many\nquestions you'd like to answer, then select a difficulty\nlevel. "
-            "\n\nYOU DON'T NEED A CALCULATOR"
-        )
+            "\n\nYOU DON'T NEED A CALCULATOR")
 
         # list for the heading labels (text | font)
         headings_labels_list = [
@@ -122,11 +145,13 @@ class Start:
         # extract choice label so that it can be changed into an error message
         self.choose_label = Start_labels_ref[2]
 
+        # Label prompting user to select difficulty level
         self.start_label = Label(self.Start_frame, text="Select a level",
                                  font=("Arial", 16, "bold"),
                                  bg="#cce5ff")
         self.start_label.grid(row=4)
 
+        # Entry field for user to input number of questions
         self.num_rounds_entry = Entry(self.Start_frame,
                                       font=("Arial", 20, "bold"),
                                       width=10, bg="#ffffff")
@@ -150,14 +175,21 @@ class Start:
             control_ref_list.append(make_level_button)
 
     def check_rounds_to_start(self, difficulty, question_func):
+        """
+                Validate the number of rounds entered and start the game if valid.
+        """
+        # Get the user's input for number of questions
         rounds_wanted = self.num_rounds_entry.get()
 
+        # Reset any previous error styling
         self.choose_label.config(fg="#000000", font=("Arial", "16", "bold"))
         self.num_rounds_entry.config(bg="#FFFFFF")
 
+        # Error message for invalid input
         error = "Please choose a whole number more than zero."
         has_errors = "no"
 
+        # number checker - makes sure that it is a whole number (can be negative)
         try:
             rounds_wanted = int(rounds_wanted)
             if rounds_wanted > 0:
@@ -170,6 +202,7 @@ class Start:
         except ValueError:
             has_errors = "yes"
 
+        # display error message if needed
         if has_errors == "yes":
             self.choose_label.config(text=error, fg="#990000", font=("Arial", "12", "bold"))
             self.num_rounds_entry.config(bg="#F4CCCC")
@@ -192,6 +225,9 @@ class Play:
     """
 
     def __init__(self, how_many, difficulty, question_func):
+        """
+                Initialize the game with the specified parameters.
+        """
         self.difficulty = difficulty
         self.generate_question_func = question_func  # Function to generate questions
 
@@ -204,7 +240,7 @@ class Play:
 
         self.bg_color = settings[difficulty]["bg"]
 
-        # Create a new top-level window for the quiz
+        # Create a new window for the quiz
         self.window = Toplevel(padx=10, pady=10, bg=self.bg_color)
         self.window.title(settings[difficulty]["title"])
 
@@ -231,20 +267,24 @@ class Play:
 
         self.correct_answer = None  # Holds the correct answer for comparison
 
-        # Answer input area
+        # Frame for answer input area
         self.answer_frame = Frame(self.main_frame, bg=self.bg_color)
         self.answer_frame.grid(row=2, padx=10)
 
+        # Label to display feedback (correct/incorrect)
         self.feedback_label = Label(self.answer_frame, text="", font=("Arial", 14, "bold"), bg=self.bg_color)
         self.feedback_label.grid(row=2, column=0, columnspan=2, pady=(0, 10))
 
+        # Entry field for user to input their answer
         self.answer_entry = Entry(self.answer_frame, font=("Arial", 20, "bold"), width=10, bg="#ffffff")
         self.answer_entry.grid(row=3, column=1, padx=10, pady=10)
 
+        # Button to submit answer
         self.submit_button = Button(self.answer_frame, text="Submit", font=("Arial", 12, "bold"),
                                     bg="#4CAF50", fg="#ffffff", command=self.check_answer)
         self.submit_button.grid(row=4, column=1, pady=5)
 
+        # Label indicating the answer field is for variable x
         self.x_label = Label(self.answer_frame, text="X  =", font=("Arial", 23, "bold"), bg=self.bg_color)
         self.x_label.grid(column=0, row=3)
 
@@ -252,9 +292,11 @@ class Play:
         self.buttons_frame = Frame(self.main_frame, bg=self.bg_color)
         self.buttons_frame.grid(row=3)
 
+        # Sub-frame for hints and stats buttons
         self.hints_stats_frame = Frame(self.buttons_frame, bg=self.bg_color)
         self.hints_stats_frame.grid(row=2)
 
+        # list for play class buttons (frame | text | colour | command | width | row | column)
         buttons_list = [
             [self.buttons_frame, "NEXT QUESTION", "#1ba1e2", self.generate_question, 22, 1, None],
             [self.hints_stats_frame, "Hints", "#FF8000", self.to_hints, 10, 2, 0],
@@ -262,6 +304,7 @@ class Play:
             [self.buttons_frame, "END GAME", "#e31010", self.close_game, 22, 3, None]
         ]
 
+        # create the buttons and add to list
         control_ref_list = []
         for item in buttons_list:
             make_control_button = Button(item[0], text=item[1], bg=item[2], command=item[3],
@@ -269,13 +312,15 @@ class Play:
             make_control_button.grid(row=item[5], column=item[6], padx=5, pady=5)
             control_ref_list.append(make_control_button)
 
+        # Store references to important buttons for later access
         self.next_question_button = control_ref_list[0]
         self.hints_button = control_ref_list[1]
         self.stats_button = control_ref_list[2]
         self.end_game_button = control_ref_list[3]
         self.next_question_button.config(state=DISABLED)
 
-        self.generate_question()  # Start with the first question
+        # Start with the first question
+        self.generate_question()
 
     def generate_question(self):
         # End the quiz if user has answered all the requested questions
@@ -327,18 +372,25 @@ class Play:
         self.window.destroy()
 
     def to_hints(self):
-        # Show hints window (stub)
+        # Show hints window
         DisplayHints(self)
 
     def to_stats(self):
-        # Show statistics window (stub)
+        # Show statistics window
         DisplayStats(self)
 
 
 class DisplayHints:
+    """
+    Class to display hints for solving algebra equations.
+    """
 
     def __init__(self, partner):
-        self.hints_box = Toplevel()
+        """
+        Initialize the hints window
+        """
+        self.partner = partner  # Store reference to parent game
+        self.hints_box = Toplevel()  # Create new window for hints
         self.hints_box.title("Hints")
         background = "#fad7ac"
 
@@ -348,24 +400,29 @@ class DisplayHints:
         # If users press the cross at the top, closes and 'releases' the hints button
         self.hints_box.protocol('WM_DELETE_WINDOW', partial(self.close_hints, partner))
 
+        # Create main frame for hints content
         self.hints_frame = Frame(self.hints_box, width=200, height=150,
                                  bg=background)
         self.hints_frame.grid()
 
+        # Heading label
         self.hints_heading_label = Label(self.hints_frame, text="Hints",
                                          font=("Arial", 16, "bold"), bg=background)
         self.hints_heading_label.grid(row=0)
 
+        # Hints text
         hints_text = ("To solve equations, first undo any adding or subtracting around x. "
                       "Then, if x is multiplied or divided by a number, do the opposite to isolate x. "
                       "For equations with brackets, first get rid of any numbers outside the brackets, "
                       "then solve the inside step by step.")
 
+        # Label to display hints text with word wrapping
         self.hints_text_label = Label(self.hints_frame, text=hints_text,
                                       wraplength=250, justify="left",
                                       font=("Arial", 12), bg=background)
         self.hints_text_label.grid(row=1, padx=10, pady=10)
 
+        # close hints button
         self.dismiss_button = Button(self.hints_frame, font=("Arial", 12, "bold"),
                                      text="DISMISS", bg="#CC6600", fg="#ffffff",
                                      command=partial(self.close_hints, partner))
@@ -376,26 +433,37 @@ class DisplayHints:
         Closes hints dialogue box and enables hints button
         """
         # Put hints button back to normal
-        partner.hints_button.config(state=NORMAL)
+        if self.partner.hints_button.winfo_exists():
+            self.partner.hints_button.config(state=NORMAL)
         self.hints_box.destroy()
 
 
 class DisplayStats:
+    """
+    Class to display game statistics.
+    """
+
     def __init__(self, partner):
-        self.partner = partner
-        self.stats_box = Toplevel()
+        """
+        Initialize the statistics window.
+        """
+        self.partner = partner  # Store reference to parent game
+        self.stats_box = Toplevel()  # Create new window for statistics
         self.stats_box.title("Game Stats")
         background = "#f9f7ed"
 
+        # Disable stats button in parent window
         if partner.stats_button.winfo_exists():
             partner.stats_button.config(state=DISABLED)
 
+        # If users press the cross at the top, closes and 'releases' the hints button
         self.stats_box.protocol("WM_DELETE_WINDOW", partial(self.close_stats, partner))
 
+        # Create main frame for statistics content
         self.stats_frame = Frame(self.stats_box, bg=background, padx=20, pady=20)
         self.stats_frame.grid()
 
-        # Heading
+        # Heading Label
         self.heading = Label(self.stats_frame, text="Game Statistics",
                              font=("Arial", 18, "bold"), bg=background)
         self.heading.grid(row=0, pady=(0, 10))
@@ -403,12 +471,15 @@ class DisplayStats:
         # Calculate stats
         answered = partner.questions_answered.get()
         correct = partner.correct_questions.get()
+        # Calculate percentage correct (handle division by zero)
         percent_correct = round((correct / answered) * 100, 1) if answered else 0
 
+        # stats text
         stats_text = (f"Questions Answered: {answered}\n"
                       f"Correct Answers: {correct}\n"
                       f"Percentage Correct: {percent_correct}%")
 
+        # display stats text
         self.stats_label = Label(self.stats_frame, text=stats_text,
                                  font=("Arial", 14), bg=background, justify="left")
         self.stats_label.grid(row=1)
@@ -421,6 +492,9 @@ class DisplayStats:
         self.dismiss_button.grid(row=2, pady=10)
 
     def close_stats(self, partner):
+        """
+                Close the statistics window and re-enable the stats button.
+        """
         if self.partner.stats_button.winfo_exists():
             self.partner.stats_button.config(state=NORMAL)
         self.stats_box.destroy()

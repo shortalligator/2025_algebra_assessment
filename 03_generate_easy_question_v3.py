@@ -32,5 +32,5 @@ def easy_questions():
 
     return equation, x
 
-
-print(easy_questions())
+while True:
+    print(easy_questions())

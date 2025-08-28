@@ -6,7 +6,6 @@ def medium_questions():
     operator1 = random.choice(["*", "/"])
     operator2 = random.choice(["+", "-"])
 
-
     a = random.randint(-10, 10)
     b = random.randint(-10, 10)
     c = random.randint(-10, 10)
@@ -31,4 +30,5 @@ def medium_questions():
 
     return equation, x
 
-print(medium_questions())
+while True:
+    print(medium_questions())
